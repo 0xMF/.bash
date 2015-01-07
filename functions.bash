@@ -48,6 +48,7 @@ function parse_git_dirty {
     echo $sts_skip
   else
     # not in list of large repos, run a one time check for this being a large repo
+<<<<<<< HEAD
     sts=$(/usr/bin/time -f "%E" git status --porcelain 2>&1)
     if [ $(echo "$sts"|wc -l) -eq 1 ]; then
       echo $unchanged
@@ -64,6 +65,29 @@ function parse_git_dirty {
         echo $unchanged 
       fi
         echo $changed
+=======
+    if [ $OS == "FreeBSD" ]; then
+      sts=$(/usr/bin/time -p git status --porcelain 2>&1)
+      echo -e '\b'
+    else
+      sts=$(/usr/bin/time -f "%E" git status --porcelain 2>&1)
+      if [ $(echo "$sts"|wc -l) -eq 1 ]; then
+        echo $unchanged
+      else
+      # do we need to add it to the list of large repos?
+        if [ $(echo "$sts"|tail -1 |cut -d: -f2|cut -d. -f1) -gt 1 ]; then 
+          echo "$PWD" >> $large_repos
+          export GIT_LARGE_REPO="$PWD"
+          echo $sts_skip && return
+        fi
+        # no then 
+        echo "$sts"|head -1|grep -Ee '^[0-9]:[0-9][0-9].[0-9][0-9]$' 2>&1 >/dev/null
+        if [ $? -eq 0 ]; then
+          echo $unchanged 
+        fi
+          echo $changed
+        fi
+>>>>>>> f051344... ignore git status check on FreeBSD
     fi
   fi
 }
