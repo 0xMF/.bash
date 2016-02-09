@@ -138,6 +138,13 @@ function psl {
 function psd {
   dark
 }
+function poof {
+  sudo sync
+  sudo sync
+  sudo sync
+  sudo systemctl start poweroff.target
+}
+
 function anc {
   alias ls='lsn'
   alias tree='tree -n'
