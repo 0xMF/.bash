@@ -114,7 +114,7 @@ function ghist() {
 function todo(){ 
   ${EDITOR:-/usr/local/bin/vim} + ~/$(date +todolist-%Y%m%d); 
 }
-  
+
 function ps1 {
   PS1="$GREEN${OSRV}$BLUE:\w$(parse_git_branch_colour)$NOCOLOR$ "
   PROMPT_COMMAND="ps1"
@@ -143,6 +143,10 @@ function poof {
   sudo sync
   sudo sync
   sudo systemctl start poweroff.target
+}
+
+function share {
+  sudo mount -t vboxsf -o uid=1000,gid=1000,dmode=700,fmode=600,umask=077 share /home/mark/share
 }
 
 function anc {
